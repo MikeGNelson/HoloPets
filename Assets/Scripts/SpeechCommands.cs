@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpeechCommands : MonoBehaviour
 {
     public Transform ball;
+    public Transform camera;
     public GameObject fox;
     public Renderer foxRenderer;
     // Start is called before the first frame update
@@ -20,16 +21,25 @@ public class SpeechCommands : MonoBehaviour
         {
             ChangeColor();
         }
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            Fetch();
+        }
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            Return();
+        }
+
     }
 
     public void Fetch()
     {
-
+        fox.GetComponent<Pet>().SetWalkTo(ball);
     }
 
     public void Return()
     {
-        fox.GetComponent<Pet>().isReturning = true;
+        fox.GetComponent<Pet>().SetWalkTo(camera);
     }
 
     public void ChangeColor()

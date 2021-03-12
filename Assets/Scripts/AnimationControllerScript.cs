@@ -99,7 +99,12 @@ public class AnimationControllerScript : MonoBehaviour
             selfAnimator.SetFloat("Bored", selfAnimator.GetFloat("Bored") + Time.deltaTime);
         }
     }
-
+    public void StartSit()
+    {
+        selfAnimator.SetBool("SittingChange", true);
+        Invoke("StopSittingChange", 0.1f);
+        selfAnimator.SetFloat("Bored", 0.0f);
+    }
     void StopJumping()
     {
         selfAnimator.SetBool("Jumping", false);
