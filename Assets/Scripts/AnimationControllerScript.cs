@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnimationControllerScript : MonoBehaviour
 {
     // -------------------------------------
-    private float BORED_THRESHOLD = 10.0f;
+    private float BORED_THRESHOLD = 2.0f;
     // -------------------------------------
 
     private Animator selfAnimator;
@@ -97,6 +97,16 @@ public class AnimationControllerScript : MonoBehaviour
         if (selfAnimator.GetFloat("Bored") < BORED_THRESHOLD)
         {
             selfAnimator.SetFloat("Bored", selfAnimator.GetFloat("Bored") + Time.deltaTime);
+            selfAnimator.SetBool("Wandering", false);
+        }
+        else if (selfAnimator.GetCurrentAnimatorStateInfo(0).IsName("Fox_Idle"))
+        {
+            selfAnimator.SetBool("Wandering", true);
+        }
+        
+        if (selfAnimator.GetBool("Wandering"))
+        {
+            selfAnimator.SetFloat("WanderingRand", Random.Range(0.0f, 20.0f));
         }
     }
     public void StartSit()
