@@ -27,7 +27,7 @@ MonoBehaviour:
   boundarySystemType:
     reference: Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem,
       Microsoft.MixedReality.Toolkit.Services.BoundarySystem
-  boundaryVisualizationProfile: {fileID: 11400000, guid: 6d28cce596b44bd3897ca86f8b24e076,
+  boundaryVisualizationProfile: {fileID: 11400000, guid: 2024c8ea1b05ff74d989b1d1dfa8705e,
     type: 2}
   enableTeleportSystem: 1
   teleportSystemType:

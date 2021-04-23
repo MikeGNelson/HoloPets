@@ -8,6 +8,9 @@ public class AnimationControllerScript : MonoBehaviour
     private float BORED_THRESHOLD = 2.0f;
     // -------------------------------------
 
+    public GameObject point;
+    public GameObject fox;
+
     private Animator selfAnimator;
 
     // Start is called before the first frame update
@@ -19,6 +22,7 @@ public class AnimationControllerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // ----- moving around -----
         if (Input.GetKey(KeyCode.I))
         {
             if (selfAnimator.GetFloat("VSpeed") < 1.0f)
@@ -59,6 +63,34 @@ public class AnimationControllerScript : MonoBehaviour
                 selfAnimator.SetFloat("HSpeed", selfAnimator.GetFloat("HSpeed") + 0.1f);
         }
 
+        Vector3 toPoint = new Vector3(point.transform.position.x, 0, point.transform.position.z) - new Vector3(fox.transform.position.x, 0, fox.transform.position.z);
+        float ang = Vector3.SignedAngle(toPoint, fox.transform.forward, Vector3.up);
+
+        if (toPoint.magnitude > 0.2f)
+        {
+            if (Mathf.Abs(ang) > 5.0f)
+            {
+                if (ang > 0.0f)
+                {
+                    selfAnimator.SetFloat("HSpeed", -1.0f);
+                }
+                else
+                {
+                    selfAnimator.SetFloat("HSpeed", 1.0f);
+                }
+            }
+            else
+            {
+                selfAnimator.SetFloat("HSpeed", 0.0f);
+            }
+            selfAnimator.SetFloat("VSpeed", Mathf.Min(1.0f, toPoint.magnitude));
+        }
+        else 
+        {
+            selfAnimator.SetFloat("VSpeed", 0.0f);
+        }
+
+        // ----- special movement -----
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selfAnimator.SetBool("Jumping", true);
@@ -94,6 +126,7 @@ public class AnimationControllerScript : MonoBehaviour
             selfAnimator.SetFloat("Bored", 0.0f);
         }
 
+        // ----- idle -----
         if (selfAnimator.GetFloat("Bored") < BORED_THRESHOLD)
         {
             selfAnimator.SetFloat("Bored", selfAnimator.GetFloat("Bored") + Time.deltaTime);
@@ -101,7 +134,7 @@ public class AnimationControllerScript : MonoBehaviour
         }
         else if (selfAnimator.GetCurrentAnimatorStateInfo(0).IsName("Fox_Idle"))
         {
-            selfAnimator.SetBool("Wandering", true);
+            //selfAnimator.SetBool("Wandering", true);
         }
         
         if (selfAnimator.GetBool("Wandering"))
