@@ -41,7 +41,7 @@ MonoBehaviour:
     type: 2}
   diagnosticsSystemProfile: {fileID: 11400000, guid: 7a2ced0d4a9ad6b45b170ce7a2eb6555,
     type: 2}
-  enableDiagnosticsSystem: 1
+  enableDiagnosticsSystem: 0
   diagnosticsSystemType:
     reference: Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem,
       Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem

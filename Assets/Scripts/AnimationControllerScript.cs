@@ -129,7 +129,7 @@ public class AnimationControllerScript : MonoBehaviour
         // ----- idle -----
         if (selfAnimator.GetFloat("Bored") < BORED_THRESHOLD)
         {
-            selfAnimator.SetFloat("Bored", selfAnimator.GetFloat("Bored") + Time.deltaTime);
+           // selfAnimator.SetFloat("Bored", selfAnimator.GetFloat("Bored") + Time.deltaTime);
             selfAnimator.SetBool("Wandering", false);
         }
         else if (selfAnimator.GetCurrentAnimatorStateInfo(0).IsName("Fox_Idle"))
