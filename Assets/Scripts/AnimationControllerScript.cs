@@ -6,12 +6,14 @@ public class AnimationControllerScript : MonoBehaviour
 {
     // -------------------------------------
     private float BORED_THRESHOLD = 2.0f;
+    private float WANDER_RADIUS = 2.0f;
     // -------------------------------------
 
     public GameObject point;
     public GameObject fox;
 
     private Animator selfAnimator;
+    private bool shouldReturn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -63,31 +65,37 @@ public class AnimationControllerScript : MonoBehaviour
                 selfAnimator.SetFloat("HSpeed", selfAnimator.GetFloat("HSpeed") + 0.1f);
         }
 
-        Vector3 toPoint = new Vector3(point.transform.position.x, 0, point.transform.position.z) - new Vector3(fox.transform.position.x, 0, fox.transform.position.z);
-        float ang = Vector3.SignedAngle(toPoint, fox.transform.forward, Vector3.up);
-
-        if (toPoint.magnitude > 0.2f)
+        // ----- chasing -----
+        if (selfAnimator.GetBool("Chasing"))
         {
-            if (Mathf.Abs(ang) > 5.0f)
+            selfAnimator.SetFloat("Bored", 0.0f);
+
+            Vector3 toPoint = new Vector3(point.transform.position.x, 0, point.transform.position.z) - new Vector3(fox.transform.position.x, 0, fox.transform.position.z);
+            float toPointAng = Vector3.SignedAngle(toPoint, fox.transform.forward, Vector3.up);
+
+            if (toPoint.magnitude > 0.2f)
             {
-                if (ang > 0.0f)
+                if (Mathf.Abs(toPointAng) > 5.0f)
                 {
-                    selfAnimator.SetFloat("HSpeed", -1.0f);
+                    if (toPointAng > 0.0f)
+                    {
+                        selfAnimator.SetFloat("HSpeed", -1.0f);
+                    }
+                    else
+                    {
+                        selfAnimator.SetFloat("HSpeed", 1.0f);
+                    }
                 }
                 else
                 {
-                    selfAnimator.SetFloat("HSpeed", 1.0f);
+                    selfAnimator.SetFloat("HSpeed", 0.0f);
                 }
+                selfAnimator.SetFloat("VSpeed", Mathf.Min(1.0f, toPoint.magnitude));
             }
             else
             {
-                selfAnimator.SetFloat("HSpeed", 0.0f);
+                selfAnimator.SetFloat("VSpeed", 0.0f);
             }
-            selfAnimator.SetFloat("VSpeed", Mathf.Min(1.0f, toPoint.magnitude));
-        }
-        else 
-        {
-            selfAnimator.SetFloat("VSpeed", 0.0f);
         }
 
         // ----- special movement -----
@@ -129,17 +137,60 @@ public class AnimationControllerScript : MonoBehaviour
         // ----- idle -----
         if (selfAnimator.GetFloat("Bored") < BORED_THRESHOLD)
         {
-           // selfAnimator.SetFloat("Bored", selfAnimator.GetFloat("Bored") + Time.deltaTime);
+            selfAnimator.SetFloat("Bored", selfAnimator.GetFloat("Bored") + Time.deltaTime);
             selfAnimator.SetBool("Wandering", false);
         }
         else if (selfAnimator.GetCurrentAnimatorStateInfo(0).IsName("Fox_Idle"))
         {
-            //selfAnimator.SetBool("Wandering", true);
+            selfAnimator.SetBool("Wandering", true);
         }
         
         if (selfAnimator.GetBool("Wandering"))
         {
             selfAnimator.SetFloat("WanderingRand", Random.Range(0.0f, 20.0f));
+            Vector3 toPlayer = new Vector3(0, 0, 0) - new Vector3(fox.transform.position.x, 0, fox.transform.position.z);
+            float toPlayerAng = Vector3.SignedAngle(toPlayer, fox.transform.forward, Vector3.up);
+            if (toPlayer.magnitude >= WANDER_RADIUS && Mathf.Abs(toPlayerAng) > 90.0f)
+            {
+                shouldReturn = true;
+                selfAnimator.SetBool("Wandering", false);
+            }
+        }
+
+        if(shouldReturn)
+        {
+            Vector3 toPlayer = new Vector3(0, 0, 0) - new Vector3(fox.transform.position.x, 0, fox.transform.position.z);
+            float toPlayerAng = Vector3.SignedAngle(toPlayer, fox.transform.forward, Vector3.up);
+
+            if (toPlayer.magnitude < WANDER_RADIUS)
+            {
+                shouldReturn = false;
+                selfAnimator.SetBool("Wandering", true);
+            }
+
+            if (toPlayer.magnitude > 0.2f)
+            {
+                if (Mathf.Abs(toPlayerAng) > 5.0f)
+                {
+                    if (toPlayerAng > 0.0f)
+                    {
+                        selfAnimator.SetFloat("HSpeed", -1.0f);
+                    }
+                    else
+                    {
+                        selfAnimator.SetFloat("HSpeed", 1.0f);
+                    }
+                }
+                else
+                {
+                    selfAnimator.SetFloat("HSpeed", 0.0f);
+                }
+                selfAnimator.SetFloat("VSpeed", Mathf.Min(1.0f, toPlayer.magnitude));
+            }
+            else
+            {
+                selfAnimator.SetFloat("VSpeed", 0.0f);
+            }
         }
     }
     public void StartSit()
