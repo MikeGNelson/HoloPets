@@ -224,6 +224,7 @@ public class HandBehavior : MonoBehaviour//IMixedRealityHandJointHandler
                             float currTime = Time.time;
                             if (currTime - lastCommand > delay)
                             {
+                                returnGesture = false;
                                 //var indexRenderer = indexPointer.GetComponent<Renderer>();
                                 indexRenderer.material.SetColor("_Color", Color.black);
                                 middleRenderer.material.SetColor("_Color", Color.black);
@@ -254,6 +255,19 @@ public class HandBehavior : MonoBehaviour//IMixedRealityHandJointHandler
                             ringRenderer.material.SetColor("_Color", Color.magenta);
                             palmRenderer.material.SetColor("_Color", Color.magenta);
                         }
+                        else
+                        {
+                            float currTime = Time.time;
+                            if (currTime - lastCommand > delay)
+                            {
+                                pointGesture = false;
+                                //var indexRenderer = indexPointer.GetComponent<Renderer>();
+                                indexRenderer.material.SetColor("_Color", Color.black);
+                                middleRenderer.material.SetColor("_Color", Color.black);
+                                ringRenderer.material.SetColor("_Color", Color.black);
+                                palmRenderer.material.SetColor("_Color", Color.black);
+                            }
+                        }
 
 
                         if(pointGesture)
@@ -262,9 +276,10 @@ public class HandBehavior : MonoBehaviour//IMixedRealityHandJointHandler
                         }
                         else
                         {
+                            speechCommands.NotPoint();
                             if(returnGesture)
                             {
-                                speechCommands.Return();
+                                speechCommands.Come();
                             }
                         }
 

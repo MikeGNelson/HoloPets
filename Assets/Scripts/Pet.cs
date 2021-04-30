@@ -6,6 +6,8 @@ public class Pet : MonoBehaviour
 {
     public Transform target;
     public bool isReturning = false;
+    public bool isFetching = false;
+    public bool withBall = false;
     private float speed = 5;
 
     public enum State
@@ -47,8 +49,20 @@ public class Pet : MonoBehaviour
                     selfAnimator.SetFloat("VSpeed", selfAnimator.GetFloat("VSpeed") + 0.1f);
                     transform.position = Vector3.MoveTowards(transform.position, altTarget, step);
                     transform.rotation = Quaternion.LookRotation(altTarget - transform.position, this.transform.up);
-                    if (Vector3.Distance(transform.position, altTarget) <= 1)
+                    if (Vector3.Distance(transform.position, altTarget) <= 0.5f)
                     {
+                        if(isFetching)
+                        {
+                            if (!withBall)
+                            {
+                                withBall = true;
+                            }
+                            else
+                            {
+                                isFetching = false;
+                                withBall = false;
+                            }
+                        }
                         isReturning = false;
                         state = State.Idle;
                     }
@@ -58,16 +72,28 @@ public class Pet : MonoBehaviour
                 isReturning = false;
                 break;
             case State.Sit:
-                this.GetComponent<AnimationControllerScript>().StartSit();
-                state = State.Idle;
+                //this.GetComponent<AnimationControllerScript>().StartSit();
+                //state = State.Idle;
+                isReturning = false;
                 break;
         }
-        
-        
+
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y - 1.0f, transform.position.z), Time.deltaTime / 30f);
     }
 
     public void SetStateSit()
     {
-        state = State.Sit;
+
+            this.GetComponent<AnimationControllerScript>().StartSit();
+            state = State.Sit;
+    }
+
+    public void SetStateIdle()
+    {
+        if (state == State.Sit)
+        {
+            this.GetComponent<AnimationControllerScript>().StopSit();
+        }
+        state = State.Idle;
     }
 }

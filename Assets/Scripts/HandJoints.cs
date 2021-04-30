@@ -24,7 +24,8 @@ public class HandJoints : MonoBehaviour
     GameObject wristObjectL;
     GameObject wristObjectR;
 
-    public GameObject ball3;
+    public GameObject chasePoint;
+    public GameObject chaseLine;
     private Vector3 fingerTip, fingerMiddle;
 
     MixedRealityPose pose;
@@ -61,37 +62,31 @@ public class HandJoints : MonoBehaviour
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out pose))
         {
             tipsL[0] = pose.Position;
-            fingerObjectsL[0].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out pose))
         {
             tipsL[1] = pose.Position;
-            fingerObjectsL[1].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out pose))
         {
             tipsL[2] = pose.Position;
-            fingerObjectsL[2].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.RingTip, Handedness.Left, out pose))
         {
             tipsL[3] = pose.Position;
-            fingerObjectsL[3].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out pose))
         {
             tipsL[4] = pose.Position;
-            fingerObjectsL[4].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Wrist, Handedness.Left, out pose))
         {
             wristL = pose.Position;
-            wristObjectL.GetComponent<Renderer>().enabled = true;
         }
 
 
@@ -99,7 +94,6 @@ public class HandJoints : MonoBehaviour
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out pose))
         {
             tipsR[0] = pose.Position;
-            fingerObjectsR[0].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out pose))
@@ -109,32 +103,27 @@ public class HandJoints : MonoBehaviour
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose))
         {
             tipsR[1] = pose.Position;
-            fingerObjectsR[1].GetComponent<Renderer>().enabled = true;
             fingerTip = pose.Position;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out pose))
         {
             tipsR[2] = pose.Position;
-            fingerObjectsR[2].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.RingTip, Handedness.Right, out pose))
         {
             tipsR[3] = pose.Position;
-            fingerObjectsR[3].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out pose))
         {
             tipsR[4] = pose.Position;
-            fingerObjectsR[4].GetComponent<Renderer>().enabled = true;
         }
 
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Wrist, Handedness.Right, out pose))
         {
             wristR = pose.Position;
-            wristObjectR.GetComponent<Renderer>().enabled = true;
         }
 
         for (int i = 0; i < 5; i++)
@@ -151,17 +140,11 @@ public class HandJoints : MonoBehaviour
     private void FixedUpdate()
     {
         RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
         if (Physics.Raycast(fingerTip, (fingerTip - fingerMiddle).normalized, out hit))
         {
-            //Debug.DrawRay(ball2.transform.position, (ball2.transform.position - ball1.transform.position).normalized * hit.distance, Color.yellow);
-            ball3.transform.position = hit.point;
-            //Debug.Log("Did Hit");
-        }
-        else
-        {
-            //Debug.DrawRay(ball2.transform.position, (ball2.transform.position - ball1.transform.position).normalized * 1000, Color.white);
-            //Debug.Log("Did not Hit");
+            chasePoint.transform.position = hit.point;
+            chaseLine.GetComponent<LineRenderer>().SetPosition(0, fingerTip);
+            chaseLine.GetComponent<LineRenderer>().SetPosition(1, hit.point);
         }
     }
 }

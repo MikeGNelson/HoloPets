@@ -59,7 +59,7 @@ MonoBehaviour:
       description: Toggle Profiler
       axisConstraint: 0
   - localizationKey: 
-    keyword: Return
+    keyword: Come
     keyCode: 0
     action:
       id: 0
@@ -74,6 +74,13 @@ MonoBehaviour:
       axisConstraint: 0
   - localizationKey: 
     keyword: Roll Over
+    keyCode: 0
+    action:
+      id: 0
+      description: Toggle Profiler
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Get Up
     keyCode: 0
     action:
       id: 0
