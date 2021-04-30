@@ -12,7 +12,7 @@ public class AnimationControllerScript : MonoBehaviour
     public GameObject point;
     public GameObject fox;
 
-    private Animator selfAnimator;
+    public Animator selfAnimator;
     private bool shouldReturn = false;
 
     // Start is called before the first frame update

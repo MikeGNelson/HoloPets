@@ -47,4 +47,9 @@ public class SpeechCommands : MonoBehaviour
         
         foxRenderer.material.color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
     }
+
+    public void Point()
+    {
+        fox.GetComponent<AnimationControllerScript>().selfAnimator.SetBool("Chasing", true);
+    }
 }

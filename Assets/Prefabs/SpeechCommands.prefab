@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5261667501404546022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5261667501404546020}
+  - component: {fileID: 5261667501404546021}
+  - component: {fileID: 5261667501404552219}
+  m_Layer: 0
+  m_Name: SpeechCommands
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5261667501404546020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5261667501404546022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5261667501404546021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5261667501404546022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6235b07f674dc1a498b10f727179e08b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ball: {fileID: 0}
+  camera: {fileID: 0}
+  fox: {fileID: 0}
+  foxRenderer: {fileID: 0}
+--- !u!114 &5261667501404552219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5261667501404546022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5069c2b42fe34468f96e0516b383f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myHandedness: 2
+  leftHandedness: 1
+  maxSize: 25
+  speechCommands: {fileID: 5261667501404546021}
+  indexPointer: {fileID: 0}
+  middlePointer: {fileID: 0}
+  ringPointer: {fileID: 0}
+  palmPointer: {fileID: 0}
+  indexPointerL: {fileID: 0}
+  middlePointerL: {fileID: 0}
+  ringPointerL: {fileID: 0}
+  palmPointerL: {fileID: 0}
+  indexText: {fileID: 0}
+  ringText: {fileID: 0}
+  indexTextL: {fileID: 0}
+  ringTextL: {fileID: 0}

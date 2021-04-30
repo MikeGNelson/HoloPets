@@ -42,7 +42,11 @@ public class HandBehavior : MonoBehaviour//IMixedRealityHandJointHandler
 
     float lastCommand = 0f;
     float lastCommand2 = 0f;
+    float lastCommand3 = 0f;
     float delay = 1f;
+
+    private bool returnGesture = false;
+    private bool pointGesture = false;
 
     public struct HandEvents
     {
@@ -171,12 +175,15 @@ public class HandBehavior : MonoBehaviour//IMixedRealityHandJointHandler
 
                         float avgFirst = (distIndexPalmR + distMidPalmR + distRingPalmR) / 3f;
 
+                        float avgPointFirst = (distMidPalmR + distRingPalmR) / 2f;
+
                         //Get average distance of palm of last (right)
                         float dist2IndexPalmR = Vector3.Distance(indexHandEvents[indexHandEvents.Count - 1].position, palmHandEvents[palmHandEvents.Count - 1].position);
                         float dist2MidPalmR = Vector3.Distance(middleHandEvents[middleHandEvents.Count - 1].position, palmHandEvents[palmHandEvents.Count - 1].position);
                         float dist2RingPalmR = Vector3.Distance(ringHandEvents[ringHandEvents.Count - 1].position, palmHandEvents[palmHandEvents.Count - 1].position);
 
                         float avgSecond = (dist2IndexPalmR + dist2MidPalmR + dist2RingPalmR) / 3f;
+                        float avgPointSecond = (dist2MidPalmR + dist2RingPalmR) / 2f;
 
                                         
                         indexText.text = (Mathf.Round(avgSecond * 1000f) / 1000).ToString();
@@ -198,7 +205,8 @@ public class HandBehavior : MonoBehaviour//IMixedRealityHandJointHandler
                             float currTime = Time.time;
                             if (currTime - lastCommand > delay)
                             {
-                                speechCommands.Return();
+                                returnGesture = true;
+                                //speechCommands.Return();
                             }
                             lastCommand = currTime;
 
@@ -228,10 +236,39 @@ public class HandBehavior : MonoBehaviour//IMixedRealityHandJointHandler
 
                         }
 
-                                      
+                        //Check if pointing
+
+                        if(dist2IndexPalmR >= avgPointSecond *1.2 && distIndexPalmR >= avgPointFirst *1.2 && avgPointSecond  <= .03 && avgPointFirst <= 0.03)
+                        {
+                            float currTime = Time.time;
+                            if (currTime - lastCommand3 > delay)
+                            {
+                                pointGesture = true;
+                                //speechCommands.Point();
+                            }
+                            lastCommand = currTime;
+
+                            //var indexRenderer = indexPointer.GetComponent<Renderer>();
+                            indexRenderer.material.SetColor("_Color", Color.magenta);
+                            middleRenderer.material.SetColor("_Color", Color.magenta);
+                            ringRenderer.material.SetColor("_Color", Color.magenta);
+                            palmRenderer.material.SetColor("_Color", Color.magenta);
+                        }
 
 
-                                    
+                        if(pointGesture)
+                        {
+                            speechCommands.Point();
+                        }
+                        else
+                        {
+                            if(returnGesture)
+                            {
+                                speechCommands.Return();
+                            }
+                        }
+
+
                     }
                 }
             }
@@ -348,6 +385,8 @@ public class HandBehavior : MonoBehaviour//IMixedRealityHandJointHandler
                                 }
 
                             }
+
+                            
 
 
                         }
